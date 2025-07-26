@@ -29,9 +29,9 @@ class BaseModel(models.Model):
 
     def save(self, *args, **kwargs):
         user = get_current_user()  # get user object
-        self.modified_by = user
-        if not self.creator_info:
-            self.created_by = user
-            self.creator_info = user.first_name + ' ' + user.last_name
-        self.modifier_info = user.first_name + ' ' + user.last_name
+        # self.modified_by = user
+        # if not self.creator_info:
+        #     self.created_by = user
+        #     self.creator_info = user.first_name + ' ' + user.last_name
+        # self.modifier_info = user.first_name + ' ' + user.last_name
         super(BaseModel, self).save(*args, **kwargs)

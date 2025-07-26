@@ -93,7 +93,7 @@ class UserSerializer(serializers.ModelSerializer):
             'province',
             'city',
             'otp_status',
-            'is_herd_owner',
+            'visible_password',
         ]
         extra_kwargs = {
             'password': {
@@ -104,6 +104,9 @@ class UserSerializer(serializers.ModelSerializer):
             },
             "national_code": {
                 'required': False
+            },
+            "visible_password" : {
+                'write_only': True
             }
         }
 
@@ -121,6 +124,7 @@ class UserSerializer(serializers.ModelSerializer):
                 representation['city_name'] = instance.city.name
             if instance.province:
                 representation['province_name'] = instance.province.name
+
 
         return representation
 
@@ -142,6 +146,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.province = validated_data.get('province', instance.province)
         instance.city = validated_data.get('province', instance.province)
         instance.otp_status = validated_data.get('otp_status')
+        instance.visible_password = validated_data.get('visible_password',instance.password)
         instance.save()
 
         return instance

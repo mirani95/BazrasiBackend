@@ -49,9 +49,11 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'mobile', 'national_code']
+    permission_classes = [AllowAny]
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
+
         """
         Customizing create user & bank account information with
         permission levels
@@ -59,15 +61,8 @@ class UserViewSet(ModelViewSet):
 
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
+            print('ok')
             user = serializer.save()
-            if 'organization' in request.data.keys():
-                organization = CustomOperations().custom_create(  # create organization for user
-                    request=request,
-                    view=OrganizationViewSet(),
-                    data_key='organization'
-                )
-            else:
-                organization = {}
             if 'user_relations' in request.data.keys():
                 user_relations = CustomOperations().custom_create(  # create user relations
                     user=user,
@@ -88,7 +83,6 @@ class UserViewSet(ModelViewSet):
                 bank_account = {}
             serializer_data = serializer.data
             serializer_data.update({
-                'organization': organization,
                 'user_relations': user_relations,  # noqa
                 'bank_account': bank_account  # noqa
             })

@@ -2,8 +2,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import (
     AbstractUser
 )
-from apps.core.models import BaseModel
 from django.db import models
+
+from apps.core.models import BaseModel
 
 
 class User(AbstractUser, BaseModel):
@@ -37,17 +38,21 @@ class User(AbstractUser, BaseModel):
         null=True
     )
     otp_status = models.BooleanField(default=False)
+    visible_password = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f'{self.username} {self.last_name}-{self.last_login}'
 
     def save(self, *args, **kwargs):
+        self.visible_password = self.password
         self.password = make_password(self.password)
         super(User, self).save(*args, **kwargs)
 
 
 class Province(BaseModel):  # noqa
     name = models.CharField(max_length=50)
+    slug = models.CharField(max_length=250,null=True)
+    tel_prefix = models.CharField(max_length=3, null=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -58,7 +63,8 @@ class Province(BaseModel):  # noqa
 
 class City(BaseModel):
     name = models.CharField(max_length=50)
-    province = models.ForeignKey(
+    slug = models.CharField(max_length=250,null=True)
+    province_id = models.ForeignKey(
         Province,
         on_delete=models.CASCADE,
         related_name='cities',
@@ -151,7 +157,7 @@ class OrganizationStats(BaseModel):
 
     def __str__(self):
         return f'Organization: {self.organization.name}'
-    
+
     def save(self, *args, **kwargs):
         return super(OrganizationStats, self).save(*args, **kwargs)
 

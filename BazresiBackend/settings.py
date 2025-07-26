@@ -25,7 +25,16 @@ SECRET_KEY = 'django-insecure-)$r9iby6-#m=m_=#edh179%!%dnn7vu-y^%*)0i42of&(+ih!k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'https://rasadyar.net/',
+    'https://localhost:9200',
+    'https://bazrasbackend.rasadyaar.ir/',
+    'http://localhost:3000',
+    'http://192.168.88.130:3000',
+
+]
 
 
 # Application definition

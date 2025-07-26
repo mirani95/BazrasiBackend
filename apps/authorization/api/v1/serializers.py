@@ -11,7 +11,6 @@ from apps.authentication.models import Organization
 import itertools
 
 
-
 class PermissionSerializer(serializers.ModelSerializer):
     """ Serialize permissions """
 
@@ -85,15 +84,11 @@ class UserRelationSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'user',
-            'organization',
             'role',
             'permissions',
         ]
 
         extra_kwargs = {
-            'organization': {
-                'required': False
-            },
             'permissions': {
                 'required': False
             },
@@ -109,8 +104,6 @@ class UserRelationSerializer(serializers.ModelSerializer):
         if isinstance(instance, UserRelations):
             if instance.user:
                 representation['user'] = auth_serializer.UserSerializer(instance.user).data
-            if instance.organization:
-                representation['organization'] = auth_serializer.OrganizationSerializer(instance.organization).data
             if instance.role:
                 representation['role'] = RoleSerializer(instance.role).data
             if instance.permissions:  # noqa
@@ -124,7 +117,6 @@ class UserRelationSerializer(serializers.ModelSerializer):
         """ update user relation object """
 
         instance.role = validated_data.get('role', instance.role)
-        instance.organization = validated_data.get('organization', instance.organization)
         instance.save()
         instance.permissions.clear()
         instance.permissions.add(*(validated_data.get('permissions', instance.permissions)))
