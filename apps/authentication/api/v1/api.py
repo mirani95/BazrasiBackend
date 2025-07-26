@@ -61,7 +61,6 @@ class UserViewSet(ModelViewSet):
 
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            print('ok')
             user = serializer.save()
             if 'user_relations' in request.data.keys():
                 user_relations = CustomOperations().custom_create(  # create user relations

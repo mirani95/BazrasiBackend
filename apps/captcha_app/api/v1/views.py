@@ -25,11 +25,14 @@ class CustomizeRestCaptchaView(views.APIView):
         cache.set(cache_key, value, settings.CAPTCHA_TIMEOUT)
 
         # generate image
-        # image_bytes = generate_image(value)
-        # image_b64 = base64.b64encode(image_bytes)
+        image_bytes = generate_image(value)
+        image_b64 = base64.b64encode(image_bytes)
 
         data = {
             settings.CAPTCHA_KEY: key,
-            "captcha_num" : int(value),
+            settings.CAPTCHA_IMAGE: image_b64,
+            'image_type': 'image/png',
+            'image_decode': 'base64',
+            "captcha_num": int(value),
         }
         return response.Response(data)
