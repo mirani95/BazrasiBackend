@@ -21,7 +21,6 @@ class CustomizedTokenObtainPairSerializer(TokenObtainPairSerializer):  # noqa
         """
         captcha_code = self.context['request'].data['captcha_code']
         captcha_key = self.context['request'].data['captcha_key']
-        print(cache.get(captcha_key))
 
         if captcha_code != cache.get(captcha_key) or 'captcha_code' not in self.context['request'].data.keys():
             raise captcha_exception.CaptchaFailed()
