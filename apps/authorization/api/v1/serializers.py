@@ -5,34 +5,11 @@ from apps.authorization.models import (
     Role,
     Permissions,
     UserRelations,
-    Page
 )
 from apps.authentication.api.v1.serializers import serializer as auth_serializer
 from apps.authentication.models import Organization
 import itertools
 
-
-class PageSerializer(serializers.ModelSerializer):
-    """ Serialize every front-end page """
-
-    class Meta:
-        model = Page
-        fields = [
-            'id',
-            'name',
-            'code',
-            'is_active'
-        ]
-
-    def to_representation(self, instance):
-        """ custom output of serializer """
-        representation = super().to_representation(instance)
-        representation['permissions'] = PermissionSerializer(
-            Permissions.objects.filter(page=instance),
-            many=True
-        ).data
-
-        return representation
 
 
 class PermissionSerializer(serializers.ModelSerializer):

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps'
+    'apps',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,114 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'rest_framework:login'
+LOGOUT_URL = 'rest_framework:logout'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+    ],
+    # 'EXCEPTION_HANDLER': 'apps.core.error_handler.custom_exception_handler',
+    "DEFAULT_PAGINATION_CLASS": 'apps.core.pagination.CustomPageNumberPagination',
+    "PAGE_SIZE": 20,
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": 'django-insecure-@0apn-lk85pfw=z00x2ib$w9#rwz8%2v4i_n^^9jz-m9b+y55*',
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
+
+    "TOKEN_OBTAIN_SERIALIZER": 'apps.authentication.api.v1.jwt_serializer.CustomizedTokenObtainPairSerializer',
+    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
+    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
+    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
+    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://:ydnW4hwzuDRYcTX3FWCHgQ1f@apo.liara.cloud:33740/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+        "KEY_PREFIX": "You have successfully set up a key-value pair!"
+    },
+    'memcache': {
+        "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
+        "LOCATION": "127.0.0.1:11211",
+    }
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis://:ydnW4hwzuDRYcTX3FWCHgQ1f@apo.liara.cloud:33740/0")],
+        },
+    },
+}
+
+REST_CAPTCHA = {
+    'CAPTCHA_CACHE': 'default',
+    'CAPTCHA_TIMEOUT': 300,  # 5 minutes
+    'CAPTCHA_LENGTH': 6,
+    'CAPTCHA_FONT_SIZE': 35,
+    'CAPTCHA_IMAGE_SIZE': (90, 20),
+    'CAPTCHA_LETTER_ROTATION': (-35, 35),
+    'CAPTCHA_FOREGROUND_COLOR': '#000000',
+    'CAPTCHA_BACKGROUND_COLOR': '#ffffff',
+    # 'CAPTCHA_FONT_PATH':
+    'CAPTCHA_CACHE_KEY': 'rest_captcha_{key}.{version}',
+    'FILTER_FUNCTION': 'rest_captcha.captcha.filter_default',
+    'NOISE_FUNCTION': 'apps.captcha_app.api.v1.serializers.noise_default'
+}
+
+ELASTICSEARCH_DSL = {
+    #  elastic HSA256 finger print f7d94c1da0668ba7874e5e09c3b1b91284fcdda97c361e0165401dc9375531b0 # noqa
+    # liara elastic password uYkiQ860vLW8DIbWpNjqtz2B # noqa
+    # local system password =z66+LCIebq4NQRR_+=R  # noqa
+    "default": {
+        "hosts": "http://monte-rosa.liara.cloud:31157",
+        "http_auth": ("elastic", "uYkiQ860vLW8DIbWpNjqtz2B"),
+    }
+}

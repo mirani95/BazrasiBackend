@@ -4,7 +4,6 @@ from apps.authorization.api.v1.serializers import (
     RoleSerializer,
     PermissionSerializer,
     UserRelationSerializer,
-    PageSerializer
 )
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,7 +11,6 @@ from apps.authorization.models import (
     Role,
     Permissions,
     UserRelations,
-    Page
 )
 from rest_framework import viewsets
 from django.db import transaction
@@ -25,34 +23,6 @@ class RoleViewSet(viewsets.ModelViewSet):
 
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
-
-
-class PageViewSet(viewsets.ModelViewSet):
-    """ add website pages to system to set permission on it """
-
-    queryset = Page.objects.all()
-    serializer_class = PageSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['name', 'code']
-
-    @action(
-        methods=['delete'],
-        detail=True,
-        url_name='delete',
-        url_path='delete',
-        name='delete'
-    )
-    @transaction.atomic
-    def delete(self, request, pk=None):
-        """ Full delete of page & permissions of page object """
-        try:
-            page = self.queryset.get(id=pk)
-            permissions = Permissions.objects.filter(page=page)
-            permissions.delete()
-            page.delete()
-            return Response(status=status.HTTP_200_OK)
-        except APIException as e:
-            return Response(e, status=status.HTTP_204_NO_CONTENT)
 
 
 class PermissionViewSet(viewsets.ModelViewSet):
