@@ -37,7 +37,6 @@ class User(AbstractUser, BaseModel):
         null=True
     )
     otp_status = models.BooleanField(default=False)
-    is_herd_owner = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.username} {self.last_name}-{self.last_login}'
