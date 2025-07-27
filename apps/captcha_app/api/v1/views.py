@@ -33,6 +33,6 @@ class CustomizeRestCaptchaView(views.APIView):
             settings.CAPTCHA_IMAGE: image_b64,
             'image_type': 'image/png',
             'image_decode': 'base64',
-            "captcha_num": int(value),
+            # "captcha_num": int(value),
         }
         return response.Response(data)

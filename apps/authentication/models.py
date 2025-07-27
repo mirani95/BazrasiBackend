@@ -86,7 +86,7 @@ class OrganizationType(BaseModel):
         ('CO', 'Cooperative'),
         ('CMP', 'Companies')
     )
-    key = models.CharField(choices=organization_keys, default='EMP', max_length=3)
+    key = models.CharField(choices=organization_keys, default='J', max_length=3)
     name = models.CharField(max_length=50, unique=True, null=True)
     code = models.IntegerField(default=0)
 
