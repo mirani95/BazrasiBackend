@@ -1,0 +1,7 @@
+{
+  "django": {
+    "pythonVersion": "3.12"
+  },
+  "app":"bazrasi-backend"
+
+}
