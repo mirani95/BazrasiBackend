@@ -16,5 +16,7 @@ class Inspection(BaseModel):
     licence_number = models.IntegerField(default=0)
     registration_number = models.IntegerField(default=0)
     economic_code = models.IntegerField(default=0)
-    #todo نوع مالکیت
+    type_of_ownership = models.CharField(max_length=250,null=True)
+    unit_type = models.CharField(max_length=250,null=True)
+    #todo بازرس همراه چیه
 
