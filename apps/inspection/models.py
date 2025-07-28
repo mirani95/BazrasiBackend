@@ -1,7 +1,7 @@
 from django.db import models
 
 from apps.authentication import models as auth_models
-from common.models import BaseModel
+from apps.core.models import BaseModel
 
 
 class Inspection(BaseModel):
