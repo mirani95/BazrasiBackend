@@ -27,6 +27,7 @@ class CustomizeRestCaptchaView(views.APIView):
         # generate image
         image_bytes = generate_image(value)
         image_b64 = base64.b64encode(image_bytes)
+        # print(int(value))
 
         data = {
             settings.CAPTCHA_KEY: key,

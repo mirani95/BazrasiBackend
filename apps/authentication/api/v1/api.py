@@ -1,6 +1,19 @@
+import random
+import typing
+
+from django.core.cache import cache
+from django.db import transaction
+from rest_framework import filters
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from apps.authentication.api.v1.serializers.jwt import CustomizedTokenObtainPairSerializer
-from rest_framework.decorators import action, permission_classes
-from apps.authentication import permissions as auth_permissions
 from apps.authentication.api.v1.serializers.serializer import (
     CitySerializer,
     ProvinceSerializer,
@@ -9,14 +22,6 @@ from apps.authentication.api.v1.serializers.serializer import (
     UserSerializer,
     BankAccountSerializer,
 )
-from rest_framework_simplejwt.views import TokenObtainPairView
-from apps.core.pagination import CustomPageNumberPagination
-from apps.authorization.api.v1 import api as authorize_view
-from rest_framework.permissions import IsAuthenticated
-from apps.authentication.tools import get_token_jti
-from common.helpers import get_organization_by_user
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import AllowAny
 from apps.authentication.models import (
     User,
     City,
@@ -26,16 +31,11 @@ from apps.authentication.models import (
     BankAccountInformation,
     BlacklistedAccessToken
 )
-from rest_framework.response import Response
-from common.tools import CustomOperations
-from rest_framework.views import APIView
-from django.core.cache import cache
-from rest_framework import filters
-from rest_framework import status
-from django.db import transaction
+from apps.authentication.tools import get_token_jti
+from apps.authorization.api.v1 import api as authorize_view
+from common.helpers import get_organization_by_user
 from common.sms import send_sms
-import random
-import typing
+from common.tools import CustomOperations
 
 
 class CustomizedTokenObtainPairView(TokenObtainPairView):
@@ -163,7 +163,15 @@ class CityViewSet(ModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
 
-    def list(self, request, *args, **kwargs):
+    @action(
+        methods=['get'],
+        detail=False,
+        url_name='get_city',
+        url_path='get_city',
+        name='get_city',
+        # permission_classes=[AllowAny]
+    )
+    def get_city(self, request, *args, **kwargs):
         """ return list of cities by province """
 
         serializer = self.serializer_class(
@@ -178,6 +186,19 @@ class ProvinceViewSet(ModelViewSet):
     """ Crud operations for province model """  #
     queryset = Province.objects.all()
     serializer_class = ProvinceSerializer
+
+    @action(
+        methods=['get'],
+        detail=False,
+        url_name='get_province',
+        url_path='get_province',
+        name='get_province',
+        # permission_classes=[AllowAny]
+    )
+    def get_province(self, request):
+        query = self.queryset
+        ser_data = self.serializer_class(query, many=True).data
+        return Response(ser_data, status=status.HTTP_200_OK)
 
 
 class OrganizationTypeViewSet(ModelViewSet):

@@ -25,7 +25,6 @@ class CitySerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            'province'
         ]
 
 
