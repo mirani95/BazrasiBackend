@@ -153,7 +153,7 @@ class UserViewSet(ModelViewSet):
     )
     def profile(self, request):
         serializer = authorize_view.UserRelationSerializer(
-            authorize_view.UserRelations.objects.get(user=request.user)
+            authorize_view.UserRelations.objects.get(user=request.user,trash=False)
         )
         return Response(serializer.data, status.HTTP_200_OK)
 
