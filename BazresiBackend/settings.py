@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'apps.authorization.apps.AuthorizationConfig',
     'apps.captcha_app.apps.CaptchaAppConfig',
     'apps.core.apps.CoreConfig',
-    'apps.inspection.apps.InspectionConfig',
+    'apps.poultry_inspection.apps.PoultryInspectionConfig',
+
     'rest_framework',
     'captcha',
     "corsheaders",

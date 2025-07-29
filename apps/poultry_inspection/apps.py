@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class InspectionConfig(AppConfig):
+class PoultryInspectionConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.inspection'
+    name = 'apps.poultry_inspection'

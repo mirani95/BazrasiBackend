@@ -32,7 +32,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('auth/', include('apps.authentication.urls')),
     path('auth/', include('apps.authorization.urls')),
-    path('inspection/', include('apps.inspection.urls')),
+    path('poultry_inspection/', include('apps.poultry_inspection.urls')),
     path('', include('apps.core.urls')),
     path('', include('apps.captcha_app.api.v1.urls')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
