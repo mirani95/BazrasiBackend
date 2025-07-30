@@ -1,15 +1,13 @@
 from datetime import datetime
+from io import BytesIO
 
 import jdatetime
 import openpyxl
-from io import BytesIO
-
 from django.http import HttpResponse
 from openpyxl import Workbook
 from openpyxl.chart import LineChart, Reference, BarChart
 from openpyxl.styles import PatternFill, Alignment, Font
 from openpyxl.utils import get_column_letter
-
 
 blue_fill = PatternFill(start_color="277358", fill_type="solid")
 Alignment_CELL = Alignment(horizontal='center', vertical='center', wrap_text=True)
