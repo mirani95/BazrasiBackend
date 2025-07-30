@@ -64,4 +64,6 @@ class PoultryInspection(BaseModel):
         related_name='poultry_inspection',
         null=True
     )
+    date = models.DateTimeField(null=True)
+
 
