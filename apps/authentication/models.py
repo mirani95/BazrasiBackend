@@ -53,6 +53,8 @@ class Province(BaseModel):  # noqa
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=250,null=True)
     tel_prefix = models.CharField(max_length=3, null=True)
+    lat = models.FloatField(default=0)
+    lng = models.FloatField(default=0)
 
     def __str__(self):
         return f'{self.name}'
@@ -70,6 +72,8 @@ class City(BaseModel):
         related_name='cities',
         null=True
     )
+    lat = models.FloatField(default=0)
+    lng = models.FloatField(default=0)
 
     def __str__(self):
         return f'{self.name}'
