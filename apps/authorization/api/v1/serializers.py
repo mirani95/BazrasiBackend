@@ -7,7 +7,6 @@ from apps.authorization.models import (
     UserRelations,
 )
 from apps.authentication.api.v1.serializers import serializer as auth_serializer
-from apps.authentication.models import Organization
 import itertools
 
 
